@@ -1,4 +1,4 @@
-package client;
+package vn.edu.crs.registrationservice.client;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,9 +23,18 @@ public class CourseClient {
         String url = courseServiceBaseUrl + "/internal/courses/" + courseId + "/reserve-seat";
         try {
             restTemplate.exchange(url, HttpMethod.PATCH, null, Void.class);
-        } catch (HttpClientErrorException.NotFound e) {
-            throw new IllegalArgumentException("Mon hoc khong ton tai");
-        } catch (HttpServerErrorException | ResourceAccessException e) {
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode().is4xxClientError()) {
+                if (e.getStatusCode().value() == 404) {
+                    throw new IllegalArgumentException("Mon hoc khong ton tai");
+                } else if (e.getStatusCode().value() == 409) {
+                    // Giữ nguyên message từ course-service
+                    throw new IllegalStateException("Mon hoc da het cho, khong the dang ky");
+                }
+            }
+            // Các lỗi khác (5xx, connection...)
+            throw new IllegalArgumentException("Khong the ket noi toi course-service, vui long thu lai sau");
+        } catch (Exception e) {
             throw new IllegalArgumentException("Khong the ket noi toi course-service, vui long thu lai sau");
         }
     }

@@ -1,8 +1,8 @@
-package controller;
+package vn.edu.crs.registrationservice.controller;
 
-import dto.RegistrationRequestDTO;
-import entity.Registration;
-import service.RegistrationService;
+import vn.edu.crs.registrationservice.dto.RegistrationRequestDTO;
+import vn.edu.crs.registrationservice.entity.Registration;
+import vn.edu.crs.registrationservice.service.RegistrationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

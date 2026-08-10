@@ -1,4 +1,4 @@
-package entity;
+package vn.edu.crs.registrationservice.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

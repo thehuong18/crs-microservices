@@ -1,6 +1,6 @@
-package repository;
+package vn.edu.crs.registrationservice.repository;
 
-import entity.Registration;
+import vn.edu.crs.registrationservice.entity.Registration;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
