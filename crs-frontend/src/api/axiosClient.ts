@@ -1,14 +1,21 @@
-// path: crs-frontend/src/api/axiosClient.ts
-// purpose: axios instance duy nhat cua toan bo frontend, TRO DUY NHAT ve api-gateway,
-// khong goi thang bat ky service nao khac
+﻿// path: crs-frontend/src/api/axiosClient.ts
+// purpose: axios instance duy nhat, tu dong dinh kem Authorization header neu co token
 
 import axios from 'axios';
 
 const axiosClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL, // http://localhost:8080
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
+});
+
+axiosClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem('crs_token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 export default axiosClient;

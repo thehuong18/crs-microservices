@@ -6,12 +6,19 @@ interface CourseListProps {
   state: LoadState;
   errorMessage: string;
   onRetry: () => void;
+  onEdit: (course: Course) => void;
+  onDelete: (course: Course) => void;
 }
 
-export default function CourseList({ courses, state, errorMessage, onRetry }: CourseListProps) {
-  if (state === 'loading') {
-    return <p>Dang tai danh sach mon hoc...</p>;
-  }
+export default function CourseList({
+  courses,
+  state,
+  errorMessage,
+  onRetry,
+  onEdit,
+  onDelete,
+}: CourseListProps) {
+  if (state === 'loading') return <p>Dang tai danh sach mon hoc...</p>;
 
   if (state === 'error') {
     return (
@@ -24,9 +31,7 @@ export default function CourseList({ courses, state, errorMessage, onRetry }: Co
     );
   }
 
-  if (state === 'empty') {
-    return <p>Khong tim thay mon hoc nao phu hop.</p>;
-  }
+  if (state === 'empty') return <p>Khong tim thay mon hoc nao phu hop.</p>;
 
   return (
     <table style={{ width: '100%', borderCollapse: 'collapse' }}>
@@ -35,6 +40,7 @@ export default function CourseList({ courses, state, errorMessage, onRetry }: Co
           <th style={{ padding: '8px' }}>Ten mon hoc</th>
           <th style={{ padding: '8px' }}>So tin chi</th>
           <th style={{ padding: '8px' }}>So cho con lai</th>
+          <th style={{ padding: '8px' }}>Thao tac</th>
         </tr>
       </thead>
       <tbody>
@@ -50,6 +56,25 @@ export default function CourseList({ courses, state, errorMessage, onRetry }: Co
               }}
             >
               {course.soChoConLai} / {course.soChoToiDa}
+            </td>
+            <td style={{ padding: '8px' }}>
+              <button
+                onClick={() => onEdit(course)}
+                style={{ padding: '4px 10px', cursor: 'pointer' }}
+              >
+                Sua
+              </button>
+              <button
+                onClick={() => onDelete(course)}
+                style={{
+                  marginLeft: 8,
+                  padding: '4px 10px',
+                  color: '#b91c1c',
+                  cursor: 'pointer',
+                }}
+              >
+                Xoa
+              </button>
             </td>
           </tr>
         ))}
