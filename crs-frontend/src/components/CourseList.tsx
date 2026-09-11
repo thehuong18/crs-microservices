@@ -6,8 +6,8 @@ interface CourseListProps {
   state: LoadState;
   errorMessage: string;
   onRetry: () => void;
-  onEdit: (course: Course) => void;
-  onDelete: (course: Course) => void;
+  onEdit?: (course: Course) => void;
+  onDelete?: (course: Course) => void;
 }
 
 export default function CourseList({
@@ -33,6 +33,8 @@ export default function CourseList({
 
   if (state === 'empty') return <p>Khong tim thay mon hoc nao phu hop.</p>;
 
+  const showActions = !!onEdit || !!onDelete;
+
   return (
     <table style={{ width: '100%', borderCollapse: 'collapse' }}>
       <thead>
@@ -40,7 +42,7 @@ export default function CourseList({
           <th style={{ padding: '8px' }}>Ten mon hoc</th>
           <th style={{ padding: '8px' }}>So tin chi</th>
           <th style={{ padding: '8px' }}>So cho con lai</th>
-          <th style={{ padding: '8px' }}>Thao tac</th>
+          {showActions && <th style={{ padding: '8px' }}>Thao tac</th>}
         </tr>
       </thead>
       <tbody>
@@ -57,25 +59,31 @@ export default function CourseList({
             >
               {course.soChoConLai} / {course.soChoToiDa}
             </td>
-            <td style={{ padding: '8px' }}>
-              <button
-                onClick={() => onEdit(course)}
-                style={{ padding: '4px 10px', cursor: 'pointer' }}
-              >
-                Sua
-              </button>
-              <button
-                onClick={() => onDelete(course)}
-                style={{
-                  marginLeft: 8,
-                  padding: '4px 10px',
-                  color: '#b91c1c',
-                  cursor: 'pointer',
-                }}
-              >
-                Xoa
-              </button>
-            </td>
+            {showActions && (
+              <td style={{ padding: '8px' }}>
+                {onEdit && (
+                  <button
+                    onClick={() => onEdit(course)}
+                    style={{ padding: '4px 10px', cursor: 'pointer' }}
+                  >
+                    Sua
+                  </button>
+                )}
+                {onDelete && (
+                  <button
+                    onClick={() => onDelete(course)}
+                    style={{
+                      marginLeft: 8,
+                      padding: '4px 10px',
+                      color: '#b91c1c',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Xoa
+                  </button>
+                )}
+              </td>
+            )}
           </tr>
         ))}
       </tbody>
